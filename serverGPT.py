@@ -4,7 +4,6 @@ this queries the openai api and sends answers back to the robot
 """
 
 import threading
-import RPi.GPIO as gpio
 import time
 import sys
 import socket
@@ -19,11 +18,34 @@ import APIKey
 r = sr.Recognizer()
 mic = sr.Microphone()
 
-openai.api_key = "YOUR API KEY"
+client = openai.OpenAI()
+
+model = "gpt-4o-mini"
+
+class Agent:
+    def __init__(self, client, model, background):
+        self.client = client
+        self.model = model
+        self.messages = [{"role": "system", "content": background}]
+
+    def queryAI(self,question):
+        self.messages.append({"role": "user", "content": question})
+        answer = client.chat.completions.create(model = self.model, messages = self.messages).choices[0].message.content
+        self.messages.append({"role": "assistant", "content": answer})
+        return answer
+
+    def printMessages(self):
+        print(len(self.messages), self.messages)
+
+
 with open('background.txt') as f:
     background = f.read()
-messages = [{"role":"system","content":background}]
 
+with open("backgroundActions.txt") as f:
+    backgroundActions = f.read()
+
+answerAI = Agent(client, model, background)
+actionsAI = Agent(client, model, backgroundActions)
 sel = selectors.DefaultSelector()
 print(sys.argv)
 host, port = sys.argv[1], int(sys.argv[2])
@@ -76,13 +98,13 @@ def service_connection(key, mask):
                     print("mic = ",responseRec)
                     userInput = responseRec
                 
-                messages.append({"role":"user","content":userInput})
-                response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=messages)
-                print("risposta = ", response['choices'][0]['message']['content'])
+                action = actionsAI.queryAI(userInput)
+                answer = answerAI.queryAI(userInput)
+                response = {"action":action,"answer":answer}
+                
+                print("risposta = ", str(response))
                 try:
-                    sent = sock.send(bytes(response['choices'][0]['message']['content'], encoding = "utf-8"))  # Should be ready to write
+                    sent = sock.send(bytes(json.dumps(response), encoding = "utf-8"))  # Should be ready to write
                 except socket.error as e:
                     print(f"Error sending data to {data.addr}: {e}")
                     sel.unregister(sock)
@@ -110,3 +132,4 @@ except Exception as e:
     print(f"Caught exception: {e}")
 finally:
     sel.close() 
+
