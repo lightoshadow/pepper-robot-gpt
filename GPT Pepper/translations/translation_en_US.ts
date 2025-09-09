@@ -9,19 +9,17 @@
             <translation type="vanished">Hello</translation>
         </message>
         <message>
-            <location filename="behavior_1/behavior.xar" line="0"/>
             <source>benvenuti nella nostra scuola,. vi faccio vedere tutte le cose che sappiamo fare.. seguitemi.</source>
             <comment>Text</comment>
-            <translation type="unfinished">benvenuti nella nostra scuola,. vi faccio vedere tutte le cose che sappiamo fare.. seguitemi.</translation>
+            <translation type="obsolete">benvenuti nella nostra scuola,. vi faccio vedere tutte le cose che sappiamo fare.. seguitemi.</translation>
         </message>
     </context>
     <context>
         <name>behavior_1/behavior.xar:/Say</name>
         <message>
-            <location filename="behavior_1/behavior.xar" line="0"/>
             <source>non sono molto veloce ma la giù stanno aspettando proprio voi... prego continuate</source>
             <comment>Text</comment>
-            <translation type="unfinished">non sono molto veloce ma la giù stanno aspettando proprio voi... prego continuate</translation>
+            <translation type="obsolete">non sono molto veloce ma la giù stanno aspettando proprio voi... prego continuate</translation>
         </message>
     </context>
     <context>
@@ -32,10 +30,9 @@
             <translation type="vanished">Hello</translation>
         </message>
         <message>
-            <location filename="behavior_1/behavior.xar" line="0"/>
             <source>batti il pugno</source>
             <comment>Text</comment>
-            <translation type="unfinished">batti il pugno</translation>
+            <translation type="obsolete">batti il pugno</translation>
         </message>
     </context>
 </TS>
